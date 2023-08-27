@@ -647,7 +647,7 @@ def interaction_handler(action_text, reaction_text, message):
                                          disable_web_page_preview=True)
 
                 else:
-                    additional_text = message.text[len(action_text):].strip()
+                    additional_text = message.text[len(action_text) + 1:].strip()
                     if len(additional_text) == 0:
                         response = f"{text1} {reaction_text} {text2} !!!!"
                     else:

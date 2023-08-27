@@ -768,14 +768,16 @@ def who_you(message):
 
 
 def create_interaction_handler(action_text, reaction_text):
-    @bot.message_handler(func=lambda message: message.text.lower().startswith(action_text.lower()))
+    @bot.message_handler(func=lambda message: message.text.lower().replace(" ", "").startswith(action_text.lower()))
     def interaction_handler(message):
         database.interaction_handler(action_text, reaction_text, message)
 
 
 triggers = database.get_triggers_from_db()
 for trigger in triggers:
-    create_interaction_handler(trigger[0], trigger[1])
+    action_text = trigger[0].strip().replace(" ", "")
+    reaction_text = trigger[1]
+    create_interaction_handler(action_text, reaction_text )
 
 
 def get_profile_replied_user(message):

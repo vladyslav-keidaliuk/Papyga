@@ -300,7 +300,7 @@ def insert_triggers():
                 ('-', 'Забирає репутацію'),
                 (config.MUTE_USER, 'Замутити юзера'),
                 (config.UNMUTE_USER, 'Размутити юзера'),
-                ("подякувати", "ПОДЯКУВАВ"),
+                ("дякую", "ПОДЯКУВАЛА(-В)"),
             ]
 
             for action_text, reaction_text in triggers_list:

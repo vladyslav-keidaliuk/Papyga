@@ -396,7 +396,7 @@ def set_nick(message):
 def send_random_number(message):
     bot.send_chat_action(message.chat.id, 'typing')
     try:
-        text = message.text[14:]
+        text = message.text[len(config.BOT_USERNAME):]
         if ',' in text.replace(" ", ""):
             number_range = text.split(",")
 

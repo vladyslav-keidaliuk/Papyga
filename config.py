@@ -8,6 +8,15 @@ YOUTUBE_MUSIC_API_KEY = 'YOUR_API_KEY'
 
 GROUP_ID = 0
 
+def db_connection():
+    db = mysql.connector.connect(
+        host="your_host",
+        user="your_user",
+        password="your_password",
+        database="your_database_name"
+    )
+    return db
+
 REACTION_FREQUENCY = 102
 # Як часто буде реакція випадати, тобто через яку кількість повідомлень,
 # позитивне число, рекомендується ставити від 100
@@ -74,7 +83,7 @@ COMMAND_TRIGGERS = 'triggers'
 COMMAND_UNPIN_BOT_MESSAGES = 'unpin'
 COMMAND_WHO_I_AM = 'whoi'
 COMMAND_UPGRADE_BAYRAKTAR = 'upgrade'
-COMMAND_MOUNTAIN_AND_THE_MINE = 'iwannadie'
+COMMAND_MOUNTAIN_AND_THE_MINE = 'mountain'
 COMMAND_TOP_BAYRAKTAR = 'top'
 COMMAND_TOP_MOUNTAIN_AND_THE_MINE = 'topm'
 COMMAND_GET_TRACK = 'music'
@@ -123,13 +132,4 @@ PAIR_OR_LESSON = True
 # Це треба для коректного відображення в tleft
 # Якщо у Вас пари (універ) залишаєте True, якщо ж у Вас уроки,
 # то змінюємо значення на False
-
-def db_connection():
-    db = mysql.connector.connect(
-        host="your_host",
-        user="your_user",
-        password="your_password",
-        database="your_database_name"
-    )
-    return db
 

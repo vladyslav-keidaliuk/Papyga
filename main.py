@@ -615,7 +615,7 @@ def upgrade(message):
 
 
 @bot.message_handler(commands=[config.COMMAND_MOUNTAIN_AND_THE_MINE])
-def iwannadie(message):
+def mountain_and_mine(message):
     bot.send_chat_action(message.chat.id, 'typing')
     if message.chat.id == GROUP_ID:
         try:
@@ -655,9 +655,9 @@ def iwannadie(message):
                         db.commit()
                     except Error as err:
                         bot.reply_to(message, f"Виникла помилка у БД : {err}")
-                        logging.error(f"Error in iwannadie db: {err}")
+                        logging.error(f"Error in mountain_and_mine db: {err}")
                     except Exception as e:
-                        logging.error(f"Error in iwannadie: {e}")
+                        logging.error(f"Error in mountain_and_mine: {e}")
                         bot.reply_to(message, f"Виникла помилка : {e}")
 
                 else:
@@ -694,9 +694,9 @@ def iwannadie(message):
                     db.commit()
                 except Error as err:
                     bot.reply_to(message, f"Виникла помилка у БД : {err}")
-                    logging.error(f"Error in iwannadie db: {err}")
+                    logging.error(f"Error in mountain_and_mine db: {err}")
                 except Exception as e:
-                    logging.error(f"Error in iwannadie: {e}")
+                    logging.error(f"Error in mountain_and_mine: {e}")
                     bot.reply_to(message, f"Виникла помилка : {e}")
 
             db.commit()
@@ -704,9 +704,9 @@ def iwannadie(message):
             db.close()
         except Error as err:
             bot.reply_to(message, f"Виникла помилка у БД : {err}")
-            logging.error(f"Error in iwannadie db: {err}")
+            logging.error(f"Error in mountain_and_mine db: {err}")
         except Exception as e:
-            logging.error(f"Error in iwannadie: {e}")
+            logging.error(f"Error in mountain_and_mine: {e}")
             bot.reply_to(message, f"Виникла помилка : {e}")
     else:
         bot.send_message(message.chat.id, "Ця команда працює лише у груповому чаті.")

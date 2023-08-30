@@ -913,7 +913,6 @@ def get_all_tasks(message):
     cursor = res[1]
     db = res[0]
     try:
-
         if message.chat.type != 'group' and message.chat.type != 'supergroup':
             bot.reply_to(message, "Ця функція доступна тільки у групових чатах.")
             return
@@ -922,9 +921,18 @@ def get_all_tasks(message):
         cursor.execute(query)
         rows = cursor.fetchall()
 
-        max_message_length = 3800
-        task_info = ""
-        current_message_length = 0
+        days_of_week = {
+            0: "Кожен день",
+            1: "Понеділок",
+            2: "Вівторок",
+            3: "Середа",
+            4: "Четвер",
+            5: "П'ятниця",
+            6: "Субота",
+            7: "Неділя"
+        }
+
+        day_groups = {day: [] for day in range(8)}
 
         if rows:
             for row in rows:
@@ -933,21 +941,36 @@ def get_all_tasks(message):
                 time = row[2]
                 text = row[3]
                 pairness = row[4]
-                task_info_entry = f"ID: {task_id}\nДень: {day}\nЧас: {time}\nТекст: {text}\nПарність: {pairness}\n\n"
-                entry_length = len(task_info_entry)
 
-                if current_message_length + entry_length > max_message_length:
-                    bot.send_message(chat_id, task_info)
-                    task_info = task_info_entry
-                    current_message_length = entry_length
-                else:
-                    task_info += task_info_entry
-                    current_message_length += entry_length
-            if task_info:
-                bot.send_message(chat_id, task_info)
+                day_name = days_of_week[day]
+                entry = f"*[ID: {task_id}]*\nЧас: _{time}_\nТекст: {text}\nПарність: {pairness}\n"
+                day_groups[day].append(entry)
+
+            formatted_tasks = ""
+            current_message_length = 0
+
+            for day in range(8):
+                day_name = days_of_week[day]
+                tasks_for_day = day_groups[day]
+
+                if tasks_for_day:
+                    sorted_tasks = sorted(tasks_for_day, key=lambda x: x.split("\nЧас: ")[1])
+                    day_tasks = "\n".join(sorted_tasks)
+                    formatted_day_tasks = f"*||{day_name}||*:\n{day_tasks}=========\n\n"
+
+                    if current_message_length + len(formatted_day_tasks) <= 3800:
+                        formatted_tasks += formatted_day_tasks
+                        current_message_length += len(formatted_day_tasks)
+                    else:
+                        bot.send_message(chat_id, formatted_tasks, parse_mode="Markdown")
+                        formatted_tasks = formatted_day_tasks
+                        current_message_length = len(formatted_day_tasks)
+            if formatted_tasks:
+                bot.send_message(chat_id, formatted_tasks, parse_mode="Markdown")
+            else:
+                bot.send_message(chat_id, "Нагадувань нема в БД.")
         else:
             bot.send_message(chat_id, "Нагадувань нема в БД.")
-
     except Error as e:
         logging.error(f"Error in get_all_tasks db: {e}")
         bot.reply_to(message, f"Щось не так. Спробуй знов. Помилка: {e}")
@@ -1447,7 +1470,7 @@ def create_schedule_from_table():
 
             my_date = datetime.date(time.localtime().tm_year, time.localtime().tm_mon, time.localtime().tm_mday)
             year, week_num, day_of_week = my_date.isocalendar()
-            week_shedule = week_num - config.START_OF_STUDY_WEEK_NUMBER
+            week_shedule = week_num - config.START_OF_STUDY_WEEK_NUMBER+1
 
             task_time = datetime.datetime.strptime(time_str, "%H:%M")
             time_utc = tz.to_utc_from_str(time_str)  # Для хостингу
@@ -1553,6 +1576,9 @@ def create_schedule_from_table():
                     # schedule.every().sunday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
                     #                                                            text)  # Локально
                     schedule.every().sunday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+
+                # schedule.every().day.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin, text)  # Локально
+                # schedule.every().day.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
 
             schedule.every().day.at(tz.get_utc_str_hh_mm_from_str(config.TIME_UNPIN_LAST_MESSAGE)).do(unpin_message)
 

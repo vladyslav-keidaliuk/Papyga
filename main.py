@@ -615,7 +615,7 @@ def upgrade(message):
 
 
 @bot.message_handler(commands=[config.COMMAND_MOUNTAIN_AND_THE_MINE])
-def mountain_and_mine(message):
+def iwannadie(message):
     bot.send_chat_action(message.chat.id, 'typing')
     if message.chat.id == GROUP_ID:
         try:
@@ -655,9 +655,9 @@ def mountain_and_mine(message):
                         db.commit()
                     except Error as err:
                         bot.reply_to(message, f"Виникла помилка у БД : {err}")
-                        logging.error(f"Error in mountain_and_mine db: {err}")
+                        logging.error(f"Error in iwannadie db: {err}")
                     except Exception as e:
-                        logging.error(f"Error in mountain_and_mine: {e}")
+                        logging.error(f"Error in iwannadie: {e}")
                         bot.reply_to(message, f"Виникла помилка : {e}")
 
                 else:
@@ -694,9 +694,9 @@ def mountain_and_mine(message):
                     db.commit()
                 except Error as err:
                     bot.reply_to(message, f"Виникла помилка у БД : {err}")
-                    logging.error(f"Error in mountain_and_mine db: {err}")
+                    logging.error(f"Error in iwannadie db: {err}")
                 except Exception as e:
-                    logging.error(f"Error in mountain_and_mine: {e}")
+                    logging.error(f"Error in iwannadie: {e}")
                     bot.reply_to(message, f"Виникла помилка : {e}")
 
             db.commit()
@@ -704,9 +704,9 @@ def mountain_and_mine(message):
             db.close()
         except Error as err:
             bot.reply_to(message, f"Виникла помилка у БД : {err}")
-            logging.error(f"Error in mountain_and_mine db: {err}")
+            logging.error(f"Error in iwannadie db: {err}")
         except Exception as e:
-            logging.error(f"Error in mountain_and_mine: {e}")
+            logging.error(f"Error in iwannadie: {e}")
             bot.reply_to(message, f"Виникла помилка : {e}")
     else:
         bot.send_message(message.chat.id, "Ця команда працює лише у груповому чаті.")
@@ -777,7 +777,7 @@ triggers = database.get_triggers_from_db()
 for trigger in triggers:
     action_text = trigger[0].strip().replace(" ", "")
     reaction_text = trigger[1]
-    create_interaction_handler(action_text, reaction_text )
+    create_interaction_handler(action_text, reaction_text)
 
 
 def get_profile_replied_user(message):
@@ -1225,7 +1225,7 @@ def delete_task(message):
             cursor.close()
             db.close()
 
-            refresh_schedule(message)
+            refresh_schedule()
 
             bot.reply_to(message, f"Завдання успішно видалено. Розклад оновлено.")
 
@@ -1352,7 +1352,7 @@ def create_task(message):
                     cursor.close()
                     db.close()
 
-                    refresh_schedule(message)
+                    refresh_schedule()
 
                     bot.reply_to(message, f"Завдання успішно додано, розклад оновлено")
 
@@ -1429,7 +1429,7 @@ stop_schedule_flag = False
 def create_schedule_from_table():
     try:
 
-        schedule.every().day.at(tz.get_utc_str_hh_mm_from_str(config.TIME_HB_CHECK)).do(happy_birthday)
+        schedule.every().day.at(tz.get_utc_str_hh_mm_from_str(config.TIME_HB_TASKS_CHECK)).do(happy_birthday)
 
         res = database.db_connect()
         cursor = res[1]
@@ -1454,7 +1454,6 @@ def create_schedule_from_table():
             time_utc = time_utc.strftime("%H:%M")  # Для хостингу
 
             if week_shedule % 2 == 0 and pairness == 2:
-                schedule.every().day.at(time_utc).do(send_message_to_group, text)  # Для хостингу
                 if day == 0:
                     # schedule.every().day.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
                     #                                                         text)  # Локально
@@ -1489,11 +1488,43 @@ def create_schedule_from_table():
                     schedule.every().sunday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
 
             elif week_shedule % 2 != 0 and pairness == 1:
-                schedule.every().day.at(time_utc).do(send_message_to_group, text)  # Для хостингу
                 if day == 0:
                     # schedule.every().day.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
                     #                                                         text)  # Локально
-                    schedule.every().day.at(time_utc).do(send_message_to_group_and_pin, text)  #Для хостингу
+                    schedule.every().day.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+                if day == 1:
+                    # schedule.every().monday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
+                    #                                                            text)  # Локально
+                    schedule.every().monday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+                if day == 2:
+                    # schedule.every().tuesday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
+                    #                                                             text)  # Локально
+                    schedule.every().tuesday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+                if day == 3:
+                    # schedule.every().wednesday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
+                    #                                                               text)  # Локально
+                    schedule.every().wednesday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+                if day == 4:
+                    # schedule.every().thursday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
+                    #                                                              text)  # Локально
+                    schedule.every().thursday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+                if day == 5:
+                    # schedule.every().friday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
+                    #                                                            text)  # Локально
+                    schedule.every().friday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+                if day == 6:
+                    # schedule.every().saturday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
+                    #                                                              text)  # Локально
+                    schedule.every().saturday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+                if day == 7:
+                    # schedule.every().sunday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
+                    #                                                            text)  # Локально
+                    schedule.every().sunday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
+            elif pairness == 0:
+                if day == 0:
+                    # schedule.every().day.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
+                    #                                                         text)  # Локально
+                    schedule.every().day.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
                 if day == 1:
                     # schedule.every().monday.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin,
                     #                                                            text)  # Локально
@@ -1523,10 +1554,6 @@ def create_schedule_from_table():
                     #                                                            text)  # Локально
                     schedule.every().sunday.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
 
-            elif pairness == 0:
-                # schedule.every().day.at(task_time.strftime("%H:%M")).do(send_message_to_group_and_pin, text)  # Локально
-                schedule.every().day.at(time_utc).do(send_message_to_group_and_pin, text)  # Для хостингу
-
             schedule.every().day.at(tz.get_utc_str_hh_mm_from_str(config.TIME_UNPIN_LAST_MESSAGE)).do(unpin_message)
 
         cursor.close()
@@ -1545,7 +1572,7 @@ schedule_thread = threading.Thread(target=create_schedule_from_table)
 schedule_thread.start()
 
 
-def refresh_schedule(message):
+def refresh_schedule():
     global schedule_thread
     global stop_schedule_flag
 
@@ -1563,7 +1590,10 @@ def refresh_schedule(message):
 
     except Exception as e:
         logging.error(f"Error in refresh_schedule : {e}")
-        bot.reply_to(message, f"Трабли якісь: {e}")
+        send_message_to_group(f"Трабли якісь: {e}")
+
+
+schedule.every().day.at(tz.get_utc_str_hh_mm_from_str(config.TIME_HB_TASKS_CHECK)).do(refresh_schedule)
 
 
 @bot.message_handler(content_types=['text', 'photo', 'video', 'document',

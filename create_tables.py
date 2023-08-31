@@ -23,7 +23,7 @@ def create_tables():
                 passmountain INT,
                 stop_timer_mountain DATETIME,
                 reputation INT,
-                nickname TEXT
+                nickname TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
             );
             """,
 
@@ -32,13 +32,9 @@ def create_tables():
                 id INT AUTO_INCREMENT PRIMARY KEY ,
                 day INT,
                 time TEXT,
-                text TEXT,
+                text TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
                 pairness INT
             );
-            """,
-
-            """
-            ALTER TABLE tasks CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
             """,
 
             """
@@ -67,10 +63,6 @@ def create_tables():
             """,
 
             """
-            ALTER TABLE birthdays CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-            """,
-
-            """
             CREATE TABLE IF NOT EXISTS pinned_messages(
                 id BIGINT ,
                 message_id BIGINT
@@ -82,7 +74,7 @@ def create_tables():
             """,
 
             """
-            
+
             CREATE TABLE IF NOT EXISTS sticker_packs(
                 id INT AUTO_INCREMENT PRIMARY KEY ,
                 sticker_pack_name TINYTEXT
@@ -131,12 +123,8 @@ def create_tables():
             CREATE TABLE IF NOT EXISTS triggers (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 action_text TEXT,
-                reaction_text TEXT
+                reaction_text TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
             );
-            """,
-
-            """
-            ALTER TABLE triggers CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
             """,
 
         ]

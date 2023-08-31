@@ -336,7 +336,7 @@ def whoi(message):
             if data_arr == 0:
 
                 text = f'{get_text_with_link(message)}, я Папуга, дивлюсь ти вперше тут.\n' \
-                       f'Тут ти можеш кожні {config.TIMER_DURATION_HOURS} годин отримувати цитату дня и дізнаватись, ' \
+                       f'Тут ти можеш кожні {config.TIMER_DURATION_HOURS} годин отримувати цитату дня і дізнаватись, ' \
                        f'яка твоя тотемна тварина на наступні {config.TIMER_DURATION_HOURS} годин.' \
                        f'Також ти будеш отримувати бонусом якусь пісню.'
                 send_message_to_group(text)
@@ -384,8 +384,8 @@ def whoi(message):
                     bot.reply_to(message, f"Виникла помилка : {e}")
 
             elif data_arr[4] == None:
-                text = f'{get_text_with_link(message)}, я Папуга 2.0, дивлюсь ти вперше тут.\n' \
-                       f'Тут ти можеш кожні {config.TIMER_DURATION_HOURS} годин отримувати цитату дня и дізнаватись, ' \
+                text = f'{get_text_with_link(message)}, я Папуга, дивлюсь ти вперше тут.\n' \
+                       f'Тут ти можеш кожні {config.TIMER_DURATION_HOURS} годин отримувати цитату дня і дізнаватись, ' \
                        f'яка твоя тотемна тварина на наступні {config.TIMER_DURATION_HOURS} годин.'
                 reply_message(message, text)
                 try:

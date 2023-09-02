@@ -1,0 +1,33 @@
+version: '3'
+services:
+    mysql:
+        image: mysql:8.0.33
+        pull_policy: missing
+        container_name: ${MYSQL_HOST}
+        command: --default-authentication-plugin=mysql_native_password
+        restart: unless-stopped
+        environment:
+            - MYSQL_USER: ${MYSQL_USER}
+            - MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            - MYSQL_DATABASE: ${MYSQL_DATABASE}
+        volumes:
+            # Specify dir where will be saved all information inside DB
+            # If container crashed/deleted/stopped all data will be lost
+            #- ./{put here your path to the dir}:/var/lib/mysql
+
+    bot:
+        build: .
+        restart: unless-stopped
+        container_name: bot
+        environment:
+            - TOKEN: ${TOKEN}
+            - SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+            - SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+            - YOUTUBE_MUSIC_API_KEY: ${YOUTUBE_MUSIC_API_KEY}
+            - MYSQL_HOST: ${MYSQL_HOST}
+            - MYSQL_USER: ${MYSQL_USER}
+            - MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            - MYSQL_DATABASE: ${MYSQL_DATABASE}
+            - BOT_USERNAME: ${BOT_USERNAME}
+        depends_on:
+            - mysql

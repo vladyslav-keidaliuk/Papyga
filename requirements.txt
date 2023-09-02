@@ -1,0 +1,10 @@
+telebot
+schedule
+mysql
+mysql-connector-python
+python-dateutil
+emoji
+matplotlib
+spotipy
+pytz
+google-api-python-client

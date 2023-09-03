@@ -1,0 +1,39 @@
+version: '3'
+services:
+    mysql:
+        image: mysql:8.0.33
+        pull_policy: missing
+        container_name: ${MYSQL_HOST}
+        command: --default-authentication-plugin=mysql_native_password
+        restart: unless-stopped
+        environment:
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_ALLOW_EMPTY_PASSWORD: yes
+        # Specify dir where will be saved all information inside DB
+        # If container crashed/deleted/stopped all data will be lost
+        # Uncomment line below
+        #volumes:
+            #- ./PATH TO FOLDER WHERE FILES WILL BE SAVED:/var/lib/mysql
+
+    bot:
+        build: .
+        restart: unless-stopped
+        container_name: bot
+        environment:
+            TOKEN: ${TOKEN}
+            MYSQL_HOST: ${MYSQL_HOST}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            BOT_USERNAME: ${BOT_USERNAME}
+            GROUP_ID: ${GROUP_ID}
+            #   Uncomment line below and specify vars into .env file if required
+            # SPOTIFY_CLIENT_ID: ${SPOTIFY_CLIENT_ID}
+            # SPOTIFY_CLIENT_SECRET: ${SPOTIFY_CLIENT_SECRET}
+            # YOUTUBE_MUSIC_API_KEY: ${YOUTUBE_MUSIC_API_KEY}
+        volumes:
+            - ./:/src
+        depends_on:
+            - mysql

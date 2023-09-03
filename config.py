@@ -1,19 +1,20 @@
 import mysql
 import mysql.connector
+import os
 
-TOKEN = 'YOUR_TOKEN'
-SPOTIFY_CLIENT_ID = 'YOUR_CLIENT_ID'
-SPOTIFY_CLIENT_SECRET = 'YOUR_CLIENT_SECRET'
-YOUTUBE_MUSIC_API_KEY = 'YOUR_API_KEY'
+TOKEN = os.environ.get('TOKEN')
+SPOTIFY_CLIENT_ID = os.environ.get('SPOTIFY_CLIENT_ID')
+SPOTIFY_CLIENT_SECRET = os.environ.get('SPOTIFY_CLIENT_SECRET')
+YOUTUBE_MUSIC_API_KEY = os.environ.get('YOUTUBE_MUSIC_API_KEY')
 
-GROUP_ID = 0
+GROUP_ID = os.environ.get('GROUP_ID')
 
 def db_connection():
     db = mysql.connector.connect(
-        host="your_host",
-        user="your_user",
-        password="your_password",
-        database="your_database_name"
+        host=os.environ.get('MYSQL_HOST'),
+        user=os.environ.get('MYSQL_USER'),
+        password=os.environ.get('MYSQL_PASSWORD'),
+        database=os.environ.get('MYSQL_DATABASE')
     )
     return db
 
@@ -29,7 +30,7 @@ STICKER_FREQUENCY = 61
 MOUNTAIN_HEIGHT = 300
 # Висота гори (шахта протяжністю як і гора), допускаються тільки позитивні числа
 
-BOT_USERNAME = '@your_username_bot'
+BOT_USERNAME = os.environ.get('BOT_USERNAME')
 # Після створення бота в BotFather замініть на username свого бота
 
 TIMER_DURATION_HOURS = 12

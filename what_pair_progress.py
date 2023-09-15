@@ -1,5 +1,7 @@
 import datetime
 import logging
+import time
+
 import mysql.connector
 import pytz
 from phrases import lists_phrases
@@ -24,11 +26,16 @@ def what_progress_in_percent(start_time, target_time, num_pair):
         elapsed_seconds = (datetime.datetime.now() - start_datetime).total_seconds()
         percentage_elapsed = int(elapsed_seconds / total_seconds * 100)
 
+        my_date = datetime.date(time.localtime().tm_year, time.localtime().tm_mon, time.localtime().tm_mday)
+        year, week_num, day_of_week = my_date.isocalendar()
+        week_shedule = week_num - config.START_OF_STUDY_WEEK_NUMBER + 1
 
         if config.PAIR_OR_LESSON:
-            result = "Пройдено " + str(percentage_elapsed) + "% " + str(num_pair) + "-ї пари.\n"
+            result = (f"Пройдено {str(percentage_elapsed)}% {str(num_pair)}-ї пари. "
+                      f"[{str(week_shedule)} тиждень]\n")
         else:
-            result = "Пройдено " + str(percentage_elapsed) + "% " + str(num_pair) + "-го уроки.\n"
+            result = (f"Пройдено {str(percentage_elapsed)}% {str(num_pair)}-го уроку. "
+                      f"[{str(week_shedule)} тиждень]\n")
 
         if 0 <= percentage_elapsed < 20:
             result = result + lists_phrases(20)
